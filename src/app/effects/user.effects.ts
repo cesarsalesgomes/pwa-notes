@@ -11,7 +11,6 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/delay';
 
 
 import * as userActions from '../actions/user.actions';
@@ -27,7 +26,6 @@ export class UserEffects {
   getUser: Observable<Action> = this.actions.ofType(userActions.GET_USER)
     .map((action: userActions.GetUser) => action.payload)
     .switchMap(payload => this.afAuth.authState)
-    .delay(2000)
     .map(authData => {
       if (authData) {
         const user = new User(authData.uid);
@@ -38,9 +36,9 @@ export class UserEffects {
     })
     .catch(err => Observable.of(new userActions.AuthError()));
 
-  // Login with Anonymous Login
+  // Login with Anonymous Login if not authenticated
   @Effect()
-  login: Observable<Action> = this.actions.ofType(userActions.ANONYMOUS_LOGIN)
+  login: Observable<Action> = this.actions.ofType(userActions.NOT_AUTHENTICATED)
     .map((action: userActions.AnonymousLogin) => action.payload)
     .switchMap(payload => {
       return Observable.fromPromise(this.anonymousLogin());

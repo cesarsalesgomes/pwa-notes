@@ -1,0 +1,9 @@
+<div *ngFor="let note of notes$ | async">
+  <h3>Note ID: {{note.id}}</h3>
+  <p>Message: {{note.message}}</p>
+
+  <button (click)="updateNote(note.id, 'ATUALIZADO')">Update</button>
+  <button (click)="deleteNote(note.id)">Delete</button>
+</div>
+
+<button (click)="createNote()">Create note</button>

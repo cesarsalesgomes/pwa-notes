@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { EffectsModule } from '@ngrx/effects';
+// import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
@@ -11,8 +11,12 @@ import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
 import { AppComponent } from './app.component';
 
-import { userReducer } from './reducers/user.reducer';
-import { UserEffects } from './effects/user.effects';
+import { NotesModule } from './notes/notes.module';
+
+import { reducers } from './reducers';
+
+// import { userReducer } from './reducers/user.reducer';
+// import { UserEffects } from './effects/user.effects';
 
 import { environment } from '../environments/environment';
 
@@ -24,18 +28,17 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    EffectsModule.forRoot([
-      UserEffects
-    ]),
-    StoreModule.forRoot({
-      user: userReducer
-    }),
+    // EffectsModule.forRoot([
+    //   UserEffects
+    // ]),
+    StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       maxAge: 10
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production
-    })
+    }),
+    NotesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

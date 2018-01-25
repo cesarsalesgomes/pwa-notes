@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { User } from '../models/user.model';
 
 export const GET_USER = '[AUTH] Get User';
 export const AUTHENTICATED = '[AUTH] Authenticated';
@@ -8,7 +7,6 @@ export const ANONYMOUS_LOGIN = '[AUTH] Anonymous Login attempt';
 export const AUTH_ERROR = '[AUTH] Error';
 
 // Get User AuthState
-
 export class GetUser implements Action {
   readonly type = GET_USER;
   constructor(public payload?: any) { }
