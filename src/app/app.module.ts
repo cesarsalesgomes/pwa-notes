@@ -9,11 +9,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
+// Components
 import { AppComponent } from './app.component';
+import { NotesComponent } from './components/notes/notes.component';
 
-import { NotesModule } from './notes/notes.module';
-
-import { reducers } from './reducers';
+import { reducers } from './store';
 
 // import { userReducer } from './reducers/user.reducer';
 // import { UserEffects } from './effects/user.effects';
@@ -22,7 +22,8 @@ import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NotesComponent
   ],
   imports: [
     BrowserModule,
@@ -37,10 +38,9 @@ import { environment } from '../environments/environment';
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production
-    }),
-    NotesModule
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

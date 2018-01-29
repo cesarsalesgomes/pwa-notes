@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
-import { User } from '../models/user.model';
+import { User } from '../../models/user.model';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
@@ -13,7 +13,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
 
 
-import * as userActions from '../actions/user.actions';
+import * as userActions from '../actions/user.action';
 export type Action = userActions.All;
 
 @Injectable()
