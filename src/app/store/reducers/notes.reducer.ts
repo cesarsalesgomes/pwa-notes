@@ -6,25 +6,18 @@ import { Note } from '../../models/note.model';
 
 // Entity adapter
 export const notesAdapter = createEntityAdapter<Note>();
-export interface NoteState extends EntityState<Note> {}
+export interface NoteState extends EntityState<Note> {
+  loading: boolean;
+}
 
-// Initial State
-const defaultNote = {
-  ids: ['1'],
-  entities: {
-    '1': {
-      id: '1',
-      message: '...'
-    }
-  }
-};
-
-export const initialState: NoteState = notesAdapter.getInitialState(defaultNote);
+export const initialState: NoteState = notesAdapter.getInitialState({
+  loading: false
+});
 
 // Reducer
 export function reducer(
   state: NoteState = initialState,
-  action: actions.NotesActions
+  action: actions.NoteAction
 ) {
   switch (action.type) {
     case actions.CREATE:

@@ -1,26 +1,31 @@
-import * as userActions from '../actions/user.action';
+import * as fromUser from '../actions/user.action';
 import { User } from '../../models/user.model';
 
-export type Action = userActions.All;
+export interface UserState {
+  uid: string;
+  loading: boolean;
+}
 
-const defaultUser = new User(null);
+export const initialState: UserState = {
+  uid: null,
+  loading: false
+};
 
 // Reducer Function
-export function userReducer(state: User = defaultUser, action: Action) {
+export function reducer(
+  state: UserState = initialState,
+  action: fromUser.UserAction
+) {
   switch (action.type) {
-    case userActions.GET_USER:
+    case fromUser.GET_USER:
       return { ...state, loading: true };
-
-    case userActions.AUTHENTICATED:
+    case fromUser.AUTHENTICATED:
       return { ...state, ...action.payload, loading: false };
-
-    case userActions.NOT_AUTHENTICATED:
-      return { ...state, ...defaultUser, loading: false };
-
-    case userActions.ANONYMOUS_LOGIN:
+    case fromUser.NOT_AUTHENTICATED:
+      return { ...state, ...initialState };
+    case fromUser.ANONYMOUS_LOGIN:
       return { ...state, loading: true };
-
-    case userActions.AUTH_ERROR:
+    case fromUser.AUTH_ERROR:
       return { ...state, ...action.payload, loading: false };
   }
 }

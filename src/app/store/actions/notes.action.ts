@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { Note } from '../../models/note.model';
 
 export const CREATE = '[Notes] Create Note';
@@ -20,4 +21,4 @@ export class Delete implements Action {
   constructor(public id: string) {}
 }
 
-export type NotesActions = Create | Update | Delete;
+export type NoteAction = Create | Update | Delete;

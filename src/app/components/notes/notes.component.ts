@@ -16,25 +16,25 @@ import { Note } from '../../models/note.model';
 export class NotesComponent implements OnInit {
   notes$: Observable<any>;
 
-  constructor(private store: Store<fromStore.State>) {}
+  // constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
-    this.notes$ = this.store.select(fromStore.selectAll);
+  //   // this.notes$ = this.store.select(fromStore.selectAll);
   }
 
-  createNote() {
-    const note: Note = {
-      id: new Date().getUTCMilliseconds().toString(),
-      message: '...'
-    };
-    this.store.dispatch(new fromStore.Create(note));
-  }
+  // createNote() {
+  //   const note: Note = {
+  //     id: new Date().getUTCMilliseconds().toString(),
+  //     message: '...'
+  //   };
+  //   this.store.dispatch(new fromStore.Create(note));
+  // }
 
-  updateNote(id, message) {
-    this.store.dispatch(new fromStore.Update(id, { message: message }));
-  }
+  // updateNote(id, message) {
+  //   this.store.dispatch(new fromStore.Update(id, { message: message }));
+  // }
 
-  deleteNote(id) {
-    this.store.dispatch(new fromStore.Delete(id));
-  }
+  // deleteNote(id) {
+  //   this.store.dispatch(new fromStore.Delete(id));
+  // }
 }

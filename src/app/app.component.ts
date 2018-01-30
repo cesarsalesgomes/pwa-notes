@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-// import { Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { User } from './models/user.model';
-// import * as userActions from './actions/user.actions';
 
-interface AppState {
-  user: User;
-}
+import * as fromStore from './store';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +13,9 @@ interface AppState {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  // user$: Observable<User>;
-
-  // constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
-    // this.user$ = this.store.select('user');
-
-    // this.store.dispatch(new userActions.GetUser());
+    this.store.dispatch(new fromStore.GetUser());
   }
 }
