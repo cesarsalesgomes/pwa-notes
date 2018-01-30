@@ -9,11 +9,15 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, effects } from './store';
 
 import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
 // Components
 import { AppComponent } from './app.component';
 import { NotesComponent } from './components/notes/notes.component';
+
+// Services
+import { NoteService } from './services/notes.service';
 
 import { environment } from '../environments/environment';
 
@@ -23,16 +27,17 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    EffectsModule.forRoot(effects),
+    AngularFirestoreModule,
     StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
     StoreDevtoolsModule.instrument({
-      maxAge: 10
+      maxAge: 25
     }),
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: environment.production
     })
   ],
-  providers: [],
+  providers: [NoteService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

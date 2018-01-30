@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -14,27 +14,30 @@ import { Note } from '../../models/note.model';
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
-  notes$: Observable<any>;
+  @Input() uid: string;
+  notes$: Observable<Note[]>;
 
-  // constructor(private store: Store<fromStore.State>) {}
+  constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
-  //   // this.notes$ = this.store.select(fromStore.selectAll);
+    this.notes$ = this.store.select(fromStore.selectAll);
   }
 
-  // createNote() {
-  //   const note: Note = {
-  //     id: new Date().getUTCMilliseconds().toString(),
-  //     message: '...'
-  //   };
-  //   this.store.dispatch(new fromStore.Create(note));
-  // }
+  createNote() {
+    const note: Note = {
+      id: new Date().getUTCMilliseconds().toString(),
+      message: '...'
+    };
+    this.store.dispatch(new fromStore.Create(note, this.uid));
+  }
 
-  // updateNote(id, message) {
-  //   this.store.dispatch(new fromStore.Update(id, { message: message }));
-  // }
+  updateNote(id, message) {
+    this.store.dispatch(
+      new fromStore.Update(id, this.uid, { message: message })
+    );
+  }
 
-  // deleteNote(id) {
-  //   this.store.dispatch(new fromStore.Delete(id));
-  // }
+  deleteNote(id) {
+    this.store.dispatch(new fromStore.Remove(id, this.uid));
+  }
 }

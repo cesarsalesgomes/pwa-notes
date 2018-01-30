@@ -1,4 +1,8 @@
-import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
+import {
+  ActionReducerMap,
+  createSelector,
+  createFeatureSelector
+} from '@ngrx/store';
 
 import * as fromNotes from './notes.reducer';
 import * as fromUser from './user.reducer';
@@ -24,3 +28,8 @@ export const {
   selectAll,
   selectTotal
 } = fromNotes.notesAdapter.getSelectors(getNotesState);
+
+// User Selectors
+export const getUserState = createFeatureSelector<fromUser.UserState>('user');
+
+export const selectUserId = createSelector(getUserState, fromUser.getUserId);

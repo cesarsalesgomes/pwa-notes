@@ -1,1 +1,3 @@
-<app-notes></app-notes>
+<div *ngIf="uid$ | async as uid">
+  <app-notes [uid]="uid"></app-notes>
+</div>

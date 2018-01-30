@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 
+// Models
 import { User } from '../../models/user.model';
 
+// Firebase
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
 
+// Rxjs
 import { Observable } from 'rxjs/Observable';
 import { map, switchMap, catchError } from 'rxjs/operators';
-
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 
+// Actions
 import * as fromUser from '../actions/user.action';
 import * as fromNotes from '../actions/notes.action';
+
 
 @Injectable()
 export class UserEffects {
@@ -66,5 +70,14 @@ export class UserEffects {
       map(() => {
         return new fromUser.AnonymousLogin();
       })
+    );
+
+  // If authenticated, load user notes
+  @Effect()
+  authenticated$: Observable<fromNotes.NoteAction> = this.actions$
+    .ofType(fromUser.AUTHENTICATED)
+    .pipe(
+      map((action: fromUser.Authenticated) => action.payload),
+      map((user: User) => new fromNotes.LoadNotes(user))
     );
 }

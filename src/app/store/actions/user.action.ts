@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
 
-export const GET_USER = '[AUTH] Get User';
-export const AUTHENTICATED = '[AUTH] User Authenticated';
-export const NOT_AUTHENTICATED = '[AUTH] User Not Authenticated';
-export const ANONYMOUS_LOGIN = '[AUTH] Anonymous Login attempt';
-export const AUTH_ERROR = '[AUTH] Error';
+export const GET_USER = '[Auth] Get User';
+export const AUTHENTICATED = '[Auth] User Authenticated';
+export const NOT_AUTHENTICATED = '[Auth] User Not Authenticated';
+export const ANONYMOUS_LOGIN = '[Auth] Anonymous Login attempt';
+export const AUTH_ERROR = '[Auth] Error';
 
 import { User } from '../../models/user.model';
 

@@ -13,9 +13,12 @@ import * as fromStore from './store';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  uid$: Observable<string>;
+
   constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
     this.store.dispatch(new fromStore.GetUser());
+    this.uid$ = this.store.select(fromStore.selectUserId);
   }
 }

@@ -1,6 +1,7 @@
 import * as fromUser from '../actions/user.action';
 import { User } from '../../models/user.model';
 
+// Entity adapter
 export interface UserState {
   uid: string;
   loading: boolean;
@@ -13,9 +14,9 @@ export const initialState: UserState = {
 
 // Reducer Function
 export function reducer(
-  state: UserState = initialState,
+  state = initialState,
   action: fromUser.UserAction
-) {
+): UserState {
   switch (action.type) {
     case fromUser.GET_USER:
       return { ...state, loading: true };
@@ -27,5 +28,9 @@ export function reducer(
       return { ...state, loading: true };
     case fromUser.AUTH_ERROR:
       return { ...state, ...action.payload, loading: false };
+    default:
+      return state;
   }
 }
+
+export const getUserId = (state: UserState) => state.uid;
