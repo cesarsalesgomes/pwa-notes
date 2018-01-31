@@ -1,9 +1,16 @@
+<div class="input-group input-group-lg mb-3">
+  <input #notebox (keyup.enter)="createNote(notebox.value)" [value]="value" type="text" class="form-control" placeholder="Escreva..." aria-label="Large">
+</div>
 <div *ngFor="let note of notes$ | async">
-  <h3>Note ID: {{note.id}}</h3>
-  <p>Message: {{note.message}}</p>
+  <div class="card mb-3">
+    <div class="card-body">
+      <p class="card-text">{{note.message}}</p>
+      <p class="card-text">
+        <small class="text-muted">Criado em {{getDate(note)}} as {{getTime(note)}}</small>
+      </p>
+    </div>
+  </div>
 
   <button (click)="updateNote(note.id, 'ATUALIZADO')">Update</button>
   <button (click)="deleteNote(note.id)">Delete</button>
 </div>
-
-<button (click)="createNote()">Create note</button>

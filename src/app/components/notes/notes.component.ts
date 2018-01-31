@@ -16,6 +16,7 @@ import { Note } from '../../models/note.model';
 export class NotesComponent implements OnInit {
   @Input() uid: string;
   notes$: Observable<Note[]>;
+  value = '';
 
   constructor(private store: Store<fromStore.State>) {}
 
@@ -23,11 +24,13 @@ export class NotesComponent implements OnInit {
     this.notes$ = this.store.select(fromStore.selectAll);
   }
 
-  createNote() {
+  createNote(message: string) {
     const note: Note = {
       id: new Date().getUTCMilliseconds().toString(),
-      message: '...'
+      message,
+      createdAt: new Date(Date.now())
     };
+    this.value = null;
     this.store.dispatch(new fromStore.Create(note, this.uid));
   }
 
@@ -39,5 +42,25 @@ export class NotesComponent implements OnInit {
 
   deleteNote(id) {
     this.store.dispatch(new fromStore.Remove(id, this.uid));
+  }
+
+  getDate(note: Note) {
+    return (
+      note.createdAt.getDate() +
+      '/' +
+      (note.createdAt.getMonth() + 1) +
+      '/' +
+      note.createdAt.getFullYear()
+    );
+  }
+
+  getTime(note: Note) {
+    return (
+      note.createdAt.getHours() +
+      ':' +
+      note.createdAt.getMinutes() +
+      ':' +
+      note.createdAt.getSeconds()
+    );
   }
 }

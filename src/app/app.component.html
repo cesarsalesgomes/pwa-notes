@@ -1,3 +1,8 @@
-<div *ngIf="uid$ | async as uid">
-  <app-notes [uid]="uid"></app-notes>
+<div class="container">
+  <div class="d-flex justify-content-center playfair">
+    <p [ngStyle]="{'font-size': '50px'}">NOTAS</p>
+  </div>
+  <div *ngIf="uid$ | async as uid">
+    <app-notes [uid]="uid"></app-notes>
+  </div>
 </div>
