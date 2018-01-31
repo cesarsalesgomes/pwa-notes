@@ -1,8 +1,10 @@
 <div class="input-group input-group-lg mb-3">
-  <input #notebox (keyup.enter)="createNote(notebox.value)" [value]="value" type="text" class="form-control" placeholder="Escreva..." aria-label="Large">
+  <input #notebox (keyup.enter)="createNote(notebox)" type="text" class="form-control" placeholder="Escreva..."
+    aria-label="Large">
 </div>
 <div *ngFor="let note of notes$ | async">
-  <div class="card mb-3">
+  <div class="card mb-3" [@cardAnimator]="animationState[note.id]" (@cardAnimator.done)="resetAnimationState(note.id)" (swipeLeft)="startAnimation('slideOutLeft',note.id)"
+    (swipeRight)="startAnimation('slideOutRight',note.id)">
     <div class="card-body">
       <p class="card-text">{{note.message}}</p>
       <p class="card-text">
@@ -10,7 +12,4 @@
       </p>
     </div>
   </div>
-
-  <button (click)="updateNote(note.id, 'ATUALIZADO')">Update</button>
-  <button (click)="deleteNote(note.id)">Delete</button>
 </div>

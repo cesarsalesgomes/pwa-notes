@@ -1,22 +1,40 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
+
 import { Observable } from 'rxjs/Observable';
+
 import * as fromStore from '../../store';
+
 import { Note } from '../../models/note.model';
 
-// import * as actions from '../notes.action';
-// import * as fromNotes from '../notes.reducer';
+import { trigger, keyframes, animate, transition } from '@angular/animations';
+import * as kf from './keyframes';
 
 @Component({
   selector: 'app-notes',
   templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.css']
+  styleUrls: ['./notes.component.css'],
+  animations: [
+    trigger('cardAnimator', [
+      transition(
+        '* => slideOutLeft',
+        animate(1000, keyframes(kf.slideOutLeft))
+      ),
+      transition(
+        '* => slideOutRight',
+        animate(1000, keyframes(kf.slideOutRight))
+      )
+    ])
+  ]
 })
 export class NotesComponent implements OnInit {
   @Input() uid: string;
+
   notes$: Observable<Note[]>;
-  value = '';
+
+  // Map with each note state animation
+  animationState = {};
 
   constructor(private store: Store<fromStore.State>) {}
 
@@ -24,21 +42,25 @@ export class NotesComponent implements OnInit {
     this.notes$ = this.store.select(fromStore.selectAll);
   }
 
-  createNote(message: string) {
+  createNote(event: any) {
+    const message = event.value;
     const note: Note = {
       id: new Date().getUTCMilliseconds().toString(),
       message,
       createdAt: new Date(Date.now())
     };
-    this.value = null;
+
     this.store.dispatch(new fromStore.Create(note, this.uid));
+
+    // Reseta notebox
+    event.value = null;
   }
 
-  updateNote(id, message) {
-    this.store.dispatch(
-      new fromStore.Update(id, this.uid, { message: message })
-    );
-  }
+  // updateNote(id, message) {
+  //   this.store.dispatch(
+  //     new fromStore.Update(id, this.uid, { message: message })
+  //   );
+  // }
 
   deleteNote(id) {
     this.store.dispatch(new fromStore.Remove(id, this.uid));
@@ -62,5 +84,26 @@ export class NotesComponent implements OnInit {
       ':' +
       note.createdAt.getSeconds()
     );
+  }
+
+  startAnimation(state: string, id: string) {
+    if (!this.animationState[id]) {
+      this.animationState[id] = state;
+
+      switch (state) {
+        case 'slideOutRight':
+        case 'slideOutLeft':
+          setTimeout(() => {
+            this.deleteNote(id);
+          }, 900);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  resetAnimationState(id: string) {
+    this.animationState[id] = '';
   }
 }
