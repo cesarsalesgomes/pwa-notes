@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
@@ -17,19 +17,17 @@ import * as kf from './keyframes';
   styleUrls: ['./notes.component.css'],
   animations: [
     trigger('cardAnimator', [
-      transition(
-        '* => slideOutLeft',
-        animate(1000, keyframes(kf.slideOutLeft))
-      ),
+      transition('* => slideOutLeft', animate(300, keyframes(kf.slideOutLeft))),
       transition(
         '* => slideOutRight',
-        animate(1000, keyframes(kf.slideOutRight))
+        animate(300, keyframes(kf.slideOutRight))
       )
     ])
   ]
 })
 export class NotesComponent implements OnInit {
   @Input() uid: string;
+  @ViewChild('notebox') notebox: ElementRef;
 
   notes$: Observable<Note[]>;
 
@@ -42,18 +40,18 @@ export class NotesComponent implements OnInit {
     this.notes$ = this.store.select(fromStore.selectAll);
   }
 
-  createNote(event: any) {
-    const message = event.value;
+  createNote() {
+    const message = this.notebox.nativeElement.value;
     const note: Note = {
       id: new Date().getUTCMilliseconds().toString(),
       message,
-      createdAt: new Date(Date.now())
+      createdAt: Date.now()
     };
 
     this.store.dispatch(new fromStore.Create(note, this.uid));
 
     // Reseta notebox
-    event.value = null;
+    this.notebox.nativeElement.value = '';
   }
 
   // updateNote(id, message) {
@@ -67,22 +65,20 @@ export class NotesComponent implements OnInit {
   }
 
   getDate(note: Note) {
+    const date = new Date(note.createdAt);
     return (
-      note.createdAt.getDate() +
-      '/' +
-      (note.createdAt.getMonth() + 1) +
-      '/' +
-      note.createdAt.getFullYear()
+      date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
     );
   }
 
   getTime(note: Note) {
+    const date = new Date(note.createdAt);
     return (
-      note.createdAt.getHours() +
+      this.twoDigits(date.getHours()) +
       ':' +
-      note.createdAt.getMinutes() +
+      this.twoDigits(date.getMinutes()) +
       ':' +
-      note.createdAt.getSeconds()
+      this.twoDigits(date.getSeconds())
     );
   }
 
@@ -95,7 +91,7 @@ export class NotesComponent implements OnInit {
         case 'slideOutLeft':
           setTimeout(() => {
             this.deleteNote(id);
-          }, 900);
+          }, 200);
           break;
         default:
           break;
@@ -105,5 +101,13 @@ export class NotesComponent implements OnInit {
 
   resetAnimationState(id: string) {
     this.animationState[id] = '';
+  }
+
+  private twoDigits(num: number) {
+    const str = num.toString();
+    if (str.length === 1) {
+      return '0' + str;
+    }
+    return str;
   }
 }
